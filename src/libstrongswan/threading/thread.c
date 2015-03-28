@@ -284,10 +284,6 @@ static void *thread_main(private_thread_t *this)
 {
 	void *res;
 
-	/* wait until thread_create() has completed thread creation */
-	this->mutex->lock(this->mutex);
-	this->mutex->unlock(this->mutex);
-
 	current_thread->set(current_thread, this);
 	pthread_cleanup_push((thread_cleanup_t)thread_cleanup, this);
 
@@ -319,18 +315,17 @@ thread_t *thread_create(thread_main_t main, void *arg)
 
 	this->main = main;
 	this->arg = arg;
-	this->mutex->lock(this->mutex);
-	if (pthread_create(&this->thread_id, NULL, (void*)thread_main, this) != 0)
-	{
-		DBG1(DBG_LIB, "failed to create thread!");
-		thread_destroy(this);
-		return NULL;
-	}
 	id_mutex->lock(id_mutex);
 	this->id = next_id++;
 	id_mutex->unlock(id_mutex);
 
-	this->mutex->unlock(this->mutex);
+	if (pthread_create(&this->thread_id, NULL, (void*)thread_main, this) != 0)
+	{
+		DBG1(DBG_LIB, "failed to create thread!");
+		this->mutex->lock(this->mutex);
+		thread_destroy(this);
+		return NULL;
+	}
 
 	return &this->public;
 }
