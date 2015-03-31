@@ -263,6 +263,45 @@ static inline void *memset_noop(void *s, int c, size_t n)
 #define POS printf("%s, line %d\n", __FILE__, __LINE__)
 
 /**
+ * malloc(), but returns aligned memory.
+ *
+ * The returned pointer must be freed using free_align(), not free().
+ *
+ * @param size			size of allocated data
+ * @param align			alignment, must be a power of 2
+ * @return				allocated hunk, aligned to align bytes
+ */
+static inline void* malloc_align(size_t size, u_int align)
+{
+	size_t pad;
+	void *ptr;
+
+	if (align < sizeof(void*))
+	{
+		align = sizeof(void*);
+	}
+	ptr = malloc(align + sizeof(void*) + size);
+	if (!ptr)
+	{
+		return NULL;
+	}
+	/* store pointer just before data */
+	pad = align - ((uintptr_t)ptr % align + sizeof(void*));
+	*(void**)(ptr + pad) = ptr;
+	return ptr + pad + sizeof(void*);
+}
+
+/**
+ * Free a hunk allocated by malloc_align().
+ *
+ * @param ptr			hunk to free
+ */
+static inline void free_align(void *ptr)
+{
+	free(*((void**)ptr - 1));
+}
+
+/**
  * Object allocation/initialization macro, using designated initializer.
  */
 #define INIT(this, ...) { (this) = malloc(sizeof(*(this))); \

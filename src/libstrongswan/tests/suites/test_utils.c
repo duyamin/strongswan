@@ -229,6 +229,35 @@ START_TEST(test_strpfx)
 END_TEST
 
 /*******************************************************************************
+ * mallac_align/free_align
+ */
+
+START_TEST(test_malloc_align)
+{
+	void *ptr[128][8];
+	int align, size, j;
+
+	for (size = 1; size < countof(ptr); size++)
+	{
+		for (align = sizeof(void*), j = 0; j < countof(ptr[0]); j++, align *= 2)
+		{
+
+			ptr[size][j] = malloc_align(size, align);
+			ck_assert((uintptr_t)ptr[size][j] % align == 0);
+			memset(ptr[size][j], 0xFF, size);
+		}
+	}
+	for (size = 1; size < countof(ptr); size++)
+	{
+		for (align = sizeof(void*), j = 0; j < countof(ptr[0]); j++, align *= 2)
+		{
+			free_align(ptr[size][j]);
+		}
+	}
+}
+END_TEST
+
+/*******************************************************************************
  * memxor
  */
 
@@ -772,6 +801,10 @@ Suite *utils_suite_create()
 
 	tc = tcase_create("string helper");
 	tcase_add_loop_test(tc, test_strpfx, 0, countof(strpfx_data));
+	suite_add_tcase(s, tc);
+
+	tc = tcase_create("malloc_align");
+	tcase_add_test(tc, test_malloc_align);
 	suite_add_tcase(s, tc);
 
 	tc = tcase_create("memxor");
