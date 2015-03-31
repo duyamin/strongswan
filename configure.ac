@@ -1194,9 +1194,9 @@ if test x$python_eggs = xtrue; then
 		AC_MSG_ERROR(Python easy_install not found)
 	fi
 	if test "x$pythoneggdir" = "xmain site-packages directory"; then
-		AC_SUBST(PYTHONEGGINSTALLDIR, "")
+		AC_SUBST(PYTHONEGGDIR, "$pythondir")
 	else
-		AC_SUBST(PYTHONEGGINSTALLDIR, "--install-dir $pythoneggdir")
+		AC_SUBST(PYTHONEGGDIR, "$pythoneggdir")
 	fi
 	AC_PATH_PROG([PY_TEST], [py.test], [], [$PATH:/bin:/usr/bin:/usr/local/bin])
 fi

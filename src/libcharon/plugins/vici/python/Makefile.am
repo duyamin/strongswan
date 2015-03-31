@@ -25,7 +25,8 @@ clean-local: setup.py
 	rm -rf vici.egg-info dist setup.py
 
 install-exec-local: dist/vici-$(PACKAGE_VERSION)-py$(PYTHON_VERSION).egg
-	$(EASY_INSTALL) $(PYTHONEGGINSTALLDIR) \
+	PYTHONPATH=$(DESTDIR)$(PYTHONEGGDIR) \
+	$(EASY_INSTALL) --install-dir $(DESTDIR)$(PYTHONEGGDIR) \
 		dist/vici-$(PACKAGE_VERSION)-py$(PYTHON_VERSION).egg
 
 if USE_PY_TEST
