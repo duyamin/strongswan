@@ -101,6 +101,8 @@ TEST_VECTOR_AEAD(aes_gcm14)
 TEST_VECTOR_AEAD(aes_gcm15)
 TEST_VECTOR_AEAD(aes_gcm16)
 
+TEST_VECTOR_AEAD(chacha20poly1305_1)
+
 TEST_VECTOR_SIGNER(aes_xcbc_s1)
 TEST_VECTOR_SIGNER(aes_xcbc_s2)
 TEST_VECTOR_SIGNER(aes_xcbc_s3)
@@ -227,4 +229,3 @@ TEST_VECTOR_RNG(rng_poker_3)
 TEST_VECTOR_RNG(rng_runs_1)
 TEST_VECTOR_RNG(rng_runs_2)
 TEST_VECTOR_RNG(rng_runs_3)
-
