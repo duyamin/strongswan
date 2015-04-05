@@ -124,6 +124,9 @@ static bool derive_ike_aead(private_keymat_v2_t *this, u_int16_t alg,
 			/* RFC 5529 */
 			salt_size = 3;
 			break;
+		case ENCR_CHACHA20_POLY1305:
+			salt_size = 0;
+			break;
 		default:
 			DBG1(DBG_IKE, "nonce size for %N unknown!",
 				 encryption_algorithm_names, alg);
