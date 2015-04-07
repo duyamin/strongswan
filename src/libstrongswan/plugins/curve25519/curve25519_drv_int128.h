@@ -13,31 +13,19 @@
  * for more details.
  */
 
-#include "curve25519_drv.h"
-#include "curve25519_drv_int128.h"
-#include "curve25519_drv_portable.h"
+/**
+ * @defgroup curve25519_drv_int128 curve25519_drv_int128
+ * @{ @ingroup curve25519
+ */
 
-typedef curve25519_drv_t*(*curve25519_drv_create)();
+#include "curve25519_drv.h"
+
+#ifndef CURVE25519_DRV_INT128_H_
+#define CURVE25519_DRV_INT128_H_
 
 /**
- * See header.
+ * Create a curve25519_drv_int128 instance.
  */
-curve25519_drv_t *curve25519_drv_probe()
-{
-	curve25519_drv_create drivers[] = {
-		curve25519_drv_int128_create,
-		curve25519_drv_portable_create,
-	};
-	curve25519_drv_t *driver;
-	int i;
+curve25519_drv_t *curve25519_drv_int128_create();
 
-	for (i = 0; i < countof(drivers); i++)
-	{
-		driver = drivers[i]();
-		if (driver)
-		{
-			return driver;
-		}
-	}
-	return NULL;
-}
+#endif /** CURVE25519_DRV_INT128_H_ @}*/
