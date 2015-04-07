@@ -219,6 +219,9 @@ static bool create_aead(private_esp_context_t *this, int alg,
 			this->aead = lib->crypto->create_aead(lib->crypto, alg,
 												  key.len - 4, 4);
 			break;
+		case ENCR_CHACHA20_POLY1305:
+			/* no salt for ChaCha20Poly1305 */
+			this->aead = lib->crypto->create_aead(lib->crypto, alg, key.len, 0);
 		default:
 			break;
 	}
