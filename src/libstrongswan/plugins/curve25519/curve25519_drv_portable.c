@@ -17,6 +17,11 @@
 
 #include "curve25519_drv_portable.h"
 
+/**
+ * Remove portable code if int128 driver supported
+ */
+#ifndef HAVE_INT128
+
 typedef struct private_curve25519_drv_t private_curve25519_drv_t;
 
 /**
@@ -680,3 +685,12 @@ curve25519_drv_t *curve25519_drv_portable_create()
 
 	return &this->public;
 }
+
+#else /* HAVE_INT128 */
+
+curve25519_drv_t *curve25519_drv_portable_create()
+{
+	return NULL;
+}
+
+#endif /* HAVE_INT128 */
