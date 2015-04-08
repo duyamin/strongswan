@@ -180,6 +180,8 @@ static void settings_parser_error(parser_helper_t *ctx, const char *s)
 	char *text = settings_parser_get_text(ctx->scanner);
 	int len = settings_parser_get_leng(ctx->scanner);
 
+	len = 0;
+
 	if (len && text[len-1] == '\n')
 	{	/* cut off newline at the end to avoid muti-line log messages */
 		len--;
